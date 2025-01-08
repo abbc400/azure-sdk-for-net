@@ -133,11 +133,17 @@
   </Target>
 
   <Target Name="ProjectDependsOn">
+    <ItemGroup>
+      <DependencyOutputs Include="@(TestDependsOnDependencyList -> '$(OutputProjectFilePath)\%(TestDependsOnDependencyList.Identity)_dependencylist.txt')"/>
+    </ItemGroup>
+
+    <Message Text="Processing dependencies for: %(TestDependsOnDependencyList.Identity)" Importance="high"/>
     <MSBuild Projects="@(ProjectReference)"
             Targets="ProjectDependsOn"
             BuildInParallel="$(BuildInParallel)"
             SkipNonexistentProjects="false"
-            SkipNonexistentTargets="true">
+            SkipNonexistentTargets="true"
+            Properties="TestDependsOnDependency=%(TestDependsOnDependencyList.Identity)">
       <Output ItemName="ProjectsToInclude" TaskParameter="TargetOutputs"/>
     </MSBuild>
     <RemoveDuplicates Inputs="@(ProjectsToInclude->Replace($(RepoRoot), ''))">
@@ -146,9 +152,9 @@
     <Message Text="Write to file $(OutputProjectFilePath)" Importance="high"/>
     <Message Text="%24%28RepoRoot%29%(ProjectsToIncludeFitered.Identity)" Importance="high"/>
     <ItemGroup>
-      <_WriteToLines Include="%24%28RepoRoot%29%(ProjectsToIncludeFitered.Identity)" />
+      <_WriteToLines Include="%24%28RepoRoot%29%(ProjectsToIncludeFiltered.Identity)"/>
     </ItemGroup>
-    <WriteLinesToFile File="$(OutputProjectFilePath)" Lines="@(_WriteToLines)" />
+    <WriteLinesToFile File="@(DependencyOutputs)" Lines="@(_WriteToLines)" Overwrite="true" />
   </Target>
 
 </Project>
