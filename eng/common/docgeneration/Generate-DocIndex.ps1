@@ -10,6 +10,8 @@ Param (
 )
 . "${PSScriptRoot}\..\scripts\common.ps1"
 
+Write-Host "DocFx = $DocFx"
+
 # Fetch a list of "artifacts" from blob storage corresponding to the given
 # language (-storagePrefix). Remove the prefix from the path names to arrive at
 # an "artifact" name.
@@ -32,7 +34,7 @@ function Get-BlobStorage-Artifacts(
         --delimiter / `
         --only-show-errors `
         --query '[].name' `
-        --num-results * | ConvertFrom-Json 
+        --num-results * | ConvertFrom-Json
     LogDebug "Number of artifacts found: $($artifacts.Length)"
 
     # example: "python/azure-storage-blob" -> "azure-storage-blob"
@@ -90,7 +92,9 @@ function GenerateDocfxTocContent([Hashtable]$tocContent, [String]$lang, [String]
     LogDebug "Start generating the docfx toc and build docfx site..."
 
     LogDebug "Initializing Default DocFx Site..."
+    Write-Host "DocFx2 = $DocFx"
     & $($DocFx) init -q -o "${DocOutDir}"
+    Write-Host "DocFx3 = $DocFx"
     # The line below is used for testing in local
     #docfx init -q -o "${DocOutDir}"
     LogDebug "Copying template and configuration..."
