@@ -4793,7 +4793,8 @@
   },
   "ApiKey": {
    "$id": "471",
-   "Name": "Authorization"
+   "Name": "Authorization",
+   "In": "header"
   }
  }
 }
