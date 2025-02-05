@@ -1,6 +1,6 @@
 # Release History
 
-## 2.2.0-beta.1 (2025-02-06)
+## 2.2.0-beta.1 (2025-02-04)
 
 This preview release aligns with the corresponding `2.2.0` beta of `OpenAI` and the `2025-01-01-Preview` Azure OpenAI Service API version.
 
